@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --var-color-bg: #f9f9f9;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg-primary: #ffffff;
+  --color-text-primary: #000000;
+  --color-primary: #22c55e;
+  --color-grey: #666666;
+  --color-light-grey: #e5e7eb;
+  --color-red: #cc0000;
+  --breakpoint-*: initial;
+  --breakpoint-mobile: 640px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+}
+
+@layer theme {
+  .dark {
+    --color-bg-primary: #121212;
+    --color-text-primary: #f5f5f5;
+    --color-primary: #22c55e; 
+    --color-grey: #c2c2c2;
+    --color-light-grey: #808080;
+    --color-red: #ff4d4d;
+
+  }
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    border-color: var(--color-light-grey);
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("./assets/fonts/Inter-VariableFont.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    @apply bg-bg-primary text-text-primary min-h-screen  flex flex-col items-center   w-screen overflow-x-hidden px-8 desktop:px-16;
+  }
+   main {
+    @apply   flex-1 w-full  max-w-7xl  pt-28 mobile:pt-12  gap-20   mobile:gap-24;
+  }
+  h1 {
+    @apply text-[2.986rem] font-extrabold leading-snug;
+  }
+
+  h2 {
+    @apply text-[2.488rem] font-bold leading-snug;
+  }
+
+  h3 {
+    @apply text-[2.074rem] font-semibold leading-snug;
+  }
+
+  h4 {
+    @apply text-[1.728rem] font-medium leading-snug;
+  }
+
+  h5 {
+    @apply text-[1.44rem] font-medium;
+  }
+
+  h6 {
+    @apply text-[1.2rem] font-medium;
+  }
+
+  p {
+    @apply text-[1rem] font-normal;
+  }
+
+  small {
+    @apply text-[0.833rem] font-light;
+  }
+  button {
+    @apply font-medium text-base rounded-sm cursor-pointer;
+  }
+
+  .text-xs-custom {
+    @apply text-[0.694rem] font-light;
+  }
+  a {
+    @apply  font-medium text-[0.833rem] no-underline cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .text-h1 {
+    @apply text-[2.986rem]  leading-snug;
+  }
+  .text-h2 {
+    @apply text-[2.488rem]  leading-snug;
+  }
+  .text-h3 {
+    @apply text-[2.074rem]  leading-snug;
+  }
+  .text-h4 {
+    @apply text-[1.728rem]  leading-snug;
+  }
+  .text-h5 {
+    @apply text-[1.44rem] ;
+  }
+  .text-h6 {
+    @apply text-[1.2rem] ;
+  }
+  .text-p {
+    @apply text-[1rem] ;
+  }
+  .text-small {
+    @apply text-[0.833rem] ;
+  }
+  .text-xs-custom {
+    @apply text-[0.694rem];
+  }
+}
