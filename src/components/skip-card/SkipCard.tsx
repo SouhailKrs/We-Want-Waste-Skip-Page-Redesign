@@ -41,7 +41,7 @@ export default function SkipCard({
       </div>
 
       <div className="p-6 gap-2 flex flex-col w-full">
-        <h5 className="font-semibold ">{skip.size} Yard Skip</h5>
+        <h1 className="font-semibold text-h5 ">{skip.size} Yard Skip</h1>
         {skip.area && (
         <p className="flex items-center gap-3 text-grey">
           <GrLocation /> {skip.area}
@@ -57,10 +57,10 @@ export default function SkipCard({
             status={skip.allows_heavy_waste}
           />
         </div>
-        <h5 className="font-bold text-primary mt-12">
+        <h2 className="font-bold text-h5 text-primary mt-12">
           £{priceWithVAT.toFixed(0)}{" "}
           <span className="text-text-primary text-base">(Inc. VAT)</span>
-        </h5>
+        </h2>
       </div>
     </div>
   );

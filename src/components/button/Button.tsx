@@ -17,6 +17,7 @@ interface ButtonProps {
   trailingIcon?: React.ReactNode;
   className?: string;
   shouldOpenHrefInNewTab?: boolean;
+  ariaLabel?: string;
 }
 
 export default function Button({
@@ -35,6 +36,7 @@ export default function Button({
   trailingIcon,
   className = "",
   shouldOpenHrefInNewTab = false,
+  ariaLabel,
 }: ButtonProps) {
   const baseClasses = `bg-primary  rounded-md    text-nowrap ${
     isLoading ? "text-transparent" : ""
@@ -74,6 +76,7 @@ export default function Button({
           onClick(e);
         }
       }}
+      aria-label={ariaLabel}
       className={buttonClasses}
       disabled={disabled}
     >

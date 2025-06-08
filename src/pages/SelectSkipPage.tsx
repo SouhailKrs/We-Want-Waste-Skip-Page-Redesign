@@ -107,6 +107,28 @@ export default function SelectSkipPage() {
 
   return (
     <div className="flex flex-col gap-16 text-center  w-full items-center mb-24">
+       <meta
+        name="description"
+        content="Find and book the perfect skip for you or renovation project in Lowestoft. Choose from various sizes and prices."
+      />
+      <meta name="robots" content="index, follow" />
+      <meta
+        property="og:title"
+        content="Skip Hire in Lowestoft | We Want Waste"
+      />
+      <meta
+        property="og:description"
+        content="Need a skip in Lowestoft? Compare sizes, durations, and prices easily and book online."
+      />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:url"
+        content="https://wewantwaste.co.uk"
+      />
+      <meta
+        property="og:image"
+        content="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg"
+      />
       <div className="flex-col flex gap-2">
         <h2 className="font-bold ">Choose Your Skip Size</h2>
         <p className="text-grey desktop:max-w-md ">

@@ -31,6 +31,7 @@ const ThemeSwitcher = () => {
       isIconOnly
       variant="text"
       className="self-end"
+       ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
         <LuSunMedium className="text-xl" />
