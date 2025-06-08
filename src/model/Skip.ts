@@ -1,4 +1,4 @@
-export interface SkipModel {
+export type SkipModel ={
   id: number;
   size: number;
   hire_period_days: number;
@@ -13,4 +13,11 @@ export interface SkipModel {
   updated_at: string; 
   allowed_on_road: boolean;
   allows_heavy_waste: boolean;
+  image: string;
 }
+export type  SkipPageFilters = {
+  size: string[];
+  location: string[];
+  duration: string;
+  price: string;
+};

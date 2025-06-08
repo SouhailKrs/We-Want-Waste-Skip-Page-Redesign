@@ -4,31 +4,46 @@ import Skeleton from "../components/skeleton/Skeleton";
 import SkipCard from "../components/skip-card/SkipCard";
 import SkipDetailsPanel from "../components/skip-details-panel/SkipDetailsPanel";
 import SkipPageDisclaimer from "../components/skip-page-disclamer/SkipPageDisclaimer";
-import type { SkipModel } from "../model/Skip";
 import SkipPageError from "../components/skip-page-error/SkipPageError";
+import type {
+  SkipModel,
+  SkipPageFilters as SkipPageFiltersType,
+} from "../model/Skip";
+import SkipPageFilters from "../components/skip-page-filters/SkipPageFilters";
+import SkipPageFiltersNoResults from "../components/skip-page-filters/SkipPageFiltersNoResults";
+import { useFetch } from "../hooks/useFetch";
 
 export default function SelectSkipPage() {
-  const [skips, setSkips] = useState<SkipModel[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedSkips, setSelectedSkips] = useState<SkipModel[]>([]);
-  useEffect(() => {
-    async function fetchSkips() {
-      try {
-        const res = await fetch(
-          "https://app.wewantwaste.co.uk/api/skips/by-location?postcode=LE10&area=Hinckley"
-        );
-        if (!res.ok) throw new Error("Failed to fetch skip data");
-        const data = await res.json();
-        setSkips(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSkips();
-  }, []);
+  const [filteredSkips, setFilteredSkips] = useState<SkipModel[]>([]);
+  const [filters, setFilters] = useState<SkipPageFiltersType>({
+    size: [],
+    location: [],
+    duration: "",
+    price: "",
+  });
+
+  function hasFilters(filters: SkipPageFiltersType): boolean {
+    const sizeFilterApplied = filters.size.length > 0;
+    const locationFilterApplied = filters.location.length > 0;
+    const durationFilterApplied = filters.duration !== "";
+    const priceFilterApplied = filters.price !== "";
+
+    return (
+      sizeFilterApplied ||
+      locationFilterApplied ||
+      durationFilterApplied ||
+      priceFilterApplied
+    );
+  }
+
+  const {
+    data: skips,
+    loading,
+    error,
+  } = useFetch<SkipModel[]>(
+    "https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft"
+  );
 
   const handleSkipSelection = (skip: SkipModel) => {
     setSelectedSkips(
@@ -42,10 +57,52 @@ export default function SelectSkipPage() {
     setSelectedSkips(selectedSkips.filter((s) => s.id !== id));
   };
 
-  if (loading)
-    return (
-       <SkipPageSkeleton />
-    );
+  useEffect(() => {
+    if (!skips) return;
+    const skipsWithImages = (skips ?? []).map((skip) => ({
+      ...skip,
+      image: `https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/${skip.size}-yarder-skip.jpg`,
+    }));
+
+    let filtered = skipsWithImages;
+
+    if (filters.size.length > 0) {
+      filtered = filtered.filter((s) =>
+        filters.size.includes(`${s.size} Yard`)
+      );
+    }
+
+    if (filters.location.length > 0) {
+      filtered = filtered.filter((s) => filters.location.includes(s.area));
+    }
+
+    if (filters.duration) {
+      filtered = filtered.filter(
+        (s) => String(s.hire_period_days) === filters.duration
+      );
+    }
+
+    if (filters.price) {
+      filtered = filtered.filter((s) => {
+        const price = s.price_before_vat;
+        switch (filters.price) {
+          case "under-300":
+            return price < 300;
+          case "300-600":
+            return price >= 300 && price <= 600;
+          case "over-600":
+            return price > 600;
+          default:
+            return true;
+        }
+      });
+    }
+
+    setFilteredSkips(filtered);
+  }, [filters, skips]);
+
+  if (loading) return <SkipPageSkeleton />;
+
   if (error) return <SkipPageError />;
 
   return (
@@ -56,27 +113,34 @@ export default function SelectSkipPage() {
           Select the perfect skip size for your garden waste
         </p>
       </div>
-      <div className="grid gap-8  w-full grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
-        {
-          skips.map((skip) => {
+      <SkipPageFilters
+        skips={skips ?? []}
+        onFilterChange={(newFilters) => setFilters(newFilters)}
+      />
+
+      <div className="grid gap-8 w-full grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
+        {filteredSkips.length === 0 && hasFilters(filters) ? (
+          <SkipPageFiltersNoResults />
+        ) : (
+          filteredSkips.map((skip) => {
             const isSelected = selectedSkips.some((s) => s.id === skip.id);
-            const imageUrl = `https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/${skip.size}-yarder-skip.jpg`;
             return (
               <SkipCard
                 onSkipSelect={handleSkipSelection}
                 skip={skip}
                 isSelected={isSelected}
-                imgUrl={imageUrl}
                 key={skip.id}
               />
             );
           })
-        }
+        )}
+
         <SkipDetailsPanel
           selectedSkips={selectedSkips}
           onSkipRemove={handleSkipRemove}
         />
       </div>
+
       <div className="flex flex-col items-center gap-4">
         <p> Need help choosing the right skip size? </p>
         <Button href="https://wewantwaste.co.uk" shouldOpenHrefInNewTab>

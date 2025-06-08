@@ -8,13 +8,11 @@ interface SkipCardProps {
   isSelected?: boolean;
   skip: SkipModel;
   onSkipSelect: (skip: SkipModel) => void;
-  imgUrl?: string;
 }
 export default function SkipCard({
   isSelected = false,
   skip,
   onSkipSelect,
-  imgUrl,
 }: SkipCardProps) {
   const priceWithVAT = skip.price_before_vat * (1 + skip.vat / 100);
   return (
@@ -23,21 +21,16 @@ export default function SkipCard({
       onClick={() => onSkipSelect(skip)}
       className={`${
         isSelected ? "ring-primary " : ""
-      }  ring-2 ring-light-grey/50 overflow-hidden hover:scale-105 rounded-lg relative cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 items-start text-start flex flex-col`}
+      }  ring-2 ring-light-grey/50 overflow-hidden max-w-2xl hover:scale-105 rounded-lg relative cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 items-start text-start flex flex-col`}
     >
       <img
-        src={imgUrl}
+        src={skip.image}
         alt={`${skip.size} yard skip`}
         className="w-full h-64 object-cover "
-        onError={(e) => {
-          (e.target as HTMLImageElement).onerror = null;
-          (e.target as HTMLImageElement).src =
-            "https://via.placeholder.com/300x192?text=No+Image";
-        }}
       />
       <div
         className={`absolute top-4 right-4 border-2 transition-all duration-200 rounded-full ${
-          isSelected ? "border-green-500" : "border-light-grey shadow-md"
+          isSelected ? "border-green-500" : "border shadow-md"
         }`}
       >
         <FaCircleCheck
@@ -49,9 +42,11 @@ export default function SkipCard({
 
       <div className="p-6 gap-2 flex flex-col w-full">
         <h5 className="font-semibold ">{skip.size} Yard Skip</h5>
+        {skip.area && (
         <p className="flex items-center gap-3 text-grey">
           <GrLocation /> {skip.area}
         </p>
+        )}
         <p className="flex items-center gap-3 text-grey">
           <IoTodayOutline /> {skip.hire_period_days} days hire period
         </p>

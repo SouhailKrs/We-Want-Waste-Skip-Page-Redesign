@@ -16,7 +16,6 @@ export default function SkipDetailsPanel({
   const skipPanelRef = useRef<HTMLDivElement>(null);
   const skipListRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     if (skipListRef.current) {
       if (isExpanded) {
@@ -40,7 +39,8 @@ export default function SkipDetailsPanel({
   return (
     <div
       ref={skipPanelRef}
-      className="fixed  duration-500 bottom-0 left-0 w-full max-h-80 bg-bg-primary border-t border-gray-300 shadow-xl z-50"
+      className="fixed duration-500 bottom-0 left-0 w-full max-h-[26rem] bg-bg-primary border-t border shadow-xl z-50"
+      style={{ maxHeight: isExpanded ? "26rem" : "5rem" }}
     >
       <div className="flex justify-between items-center p-6">
         <div className="flex flex-col items-start">
@@ -78,27 +78,19 @@ export default function SkipDetailsPanel({
           opacity: 0,
         }}
       >
-        <div className="overflow-y-auto max-h-64 flex flex-col gap-4 p-6 pt-0 ">
+        <div className="overflow-y-auto   max-h-64 flex flex-col gap-4 p-6  pt-0 ">
           {selectedSkips.map((skip) => {
             const skiperPriceWithVAT =
               skip.price_before_vat * (1 + skip.vat / 100);
-            const imageUrl = `https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/${skip.size}-yarder-skip.jpg`;
-
             return (
               <div
                 key={skip.id}
                 className="flex items-center gap-4 border rounded-md p-2 shadow-sm"
               >
                 <img
-                  src={imageUrl}
+                  src={skip.image}
                   alt={`${skip.size} yard skip`}
                   className="w-14 h-14 object-cover rounded"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src =
-                      "https://via.placeholder.com/64x64?text=No+Image";
-                  }}
                 />
                 <div className="text-start">
                   <p className="font-semibold">
