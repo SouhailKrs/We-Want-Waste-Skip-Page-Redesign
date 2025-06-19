@@ -61,7 +61,7 @@ export default function SelectSkipPage() {
     if (!skips) return;
     const skipsWithImages = (skips ?? []).map((skip) => ({
       ...skip,
-      image: `https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/${skip.size}-yarder-skip.jpg`,
+      image: `https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/${skip.size}-yard-skip.jpg`,
     }));
 
     let filtered = skipsWithImages;
@@ -127,7 +127,7 @@ export default function SelectSkipPage() {
       />
       <meta
         property="og:image"
-        content="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg"
+        content="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yard-skip.jpg"
       />
       <div className="flex-col flex gap-2">
         <h2 className="font-bold ">Choose Your Skip Size</h2>
